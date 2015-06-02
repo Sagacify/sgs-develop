@@ -8,6 +8,7 @@
 		"test": "grunt test"
 	},
 	"dependencies": {
+		"object-path": "~0.9.2",
 		"mongoose": "^3.0.0",
 		"async": "^0.2.5",
 		"underscore": "1.7.0",

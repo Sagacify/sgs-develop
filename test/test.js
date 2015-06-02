@@ -25,9 +25,6 @@ var test = mongoose.model('Test')({
 	}]
 });
 
-debugger
-
-
 describe('Testing the mongoose develop module.', function () {
 	'use strict';
 
@@ -45,7 +42,8 @@ describe('Testing the mongoose develop module.', function () {
 			mongoose.model('Test').create({
 				attr1: 'attr1',
 				attr2: {
-					attr3: 'attr3'
+					attr3: 'attr3',
+					_id: new (mongoose.Types.ObjectId)()
 				},
 				embeddedTests: [{
 					embeddedAttr: 'embeddedAttr'
@@ -70,16 +68,26 @@ describe('Testing the mongoose develop module.', function () {
 		assert(!(doc instanceof mongoose.Document));
 		var keys = _(doc).keys();
 		assert.equal(keys.length, 3);
+		assert(_(keys).contains('_id'));
 		assert(_(keys).contains('attr1'));
-		assert(_(keys).contains('attr2.attr3'));
+		assert(_(keys).contains('attr2'));
+		var nestkeys = _(doc.attr2).keys();
+		assert.equal(nestkeys.length, 2);
+		assert(_(nestkeys).contains('_id'));
+		assert(_(nestkeys).contains('attr3'));
 	};
 
 	var assertTestDetailed = function(doc){
 		assert(!(doc instanceof mongoose.Document));
 		var keys = _(doc).keys();
 		assert.equal(keys.length, 6);
+		assert(_(keys).contains('_id'));
 		assert(_(keys).contains('attr1'));
-		assert(_(keys).contains('attr2.attr3'));
+		assert(_(keys).contains('attr2'));
+		var nestkeys = _(doc.attr2).keys();
+		assert.equal(nestkeys.length, 2);
+		assert(_(nestkeys).contains('_id'));
+		assert(_(nestkeys).contains('attr3'));
 		assert(_(keys).contains('embeddedTests'));
 		assert(_(keys).contains('virtualInstanceAttr'));
 		assert(_(keys).contains('virtualStringAttr'));
@@ -107,7 +115,7 @@ describe('Testing the mongoose develop module.', function () {
 	var assertEmbeddedTestDetailed = function(doc){
 		assert(!(doc instanceof mongoose.Document));
 		var keys = _(doc).keys();
-		assert.equal(keys.length, 2);
+		assert.equal(keys.length, 3);
 		assert(_(keys).contains('embeddedAttr'));
 		assert(_(keys).contains('virtualAttr'));
 	};
@@ -224,6 +232,53 @@ describe('Testing the mongoose develop module.', function () {
 				}
 
 				assert.strictEqual(typeof res.data._id, 'string');
+				done();
+			});
+		});
+	});
+
+	it('ObjectId is stringified in embedded', function (done) {
+		mongoose.model('Test')
+		.findOne({}, function (e, test) {
+
+			var req = {
+				data: {
+					scope: 'detailed'
+				}
+			};
+			var res = {
+				data: test
+			};
+
+			develop({})(req, res, function (e) {
+				if (e) {
+					return done(e);
+				}
+
+				assert.strictEqual(typeof res.data.embeddedTests[0]._id, 'string');
+				done();
+			});
+		});
+	});
+
+	it('ObjectId is stringified in nested', function (done) {
+		mongoose.model('Test')
+		.findOne({}, function (e, test) {
+			var req = {
+				data: {
+					scope: 'light'
+				}
+			};
+			var res = {
+				data: test
+			};
+
+			develop({})(req, res, function (e) {
+				if (e) {
+					return done(e);
+				}
+
+				assert.strictEqual(typeof res.data.attr2._id, 'string');
 				done();
 			});
 		});

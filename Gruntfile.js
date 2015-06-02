@@ -82,10 +82,10 @@ function GruntTasks (grunt) {
 
 	grunt.registerTask('test', [
 		'clean:coverage',
-		'instrument',
+		// 'instrument',
 		'mochaTest',
-		'storeCoverage',
-		'makeReport'
+		// 'storeCoverage',
+		// 'makeReport'
 	]);
 
 	grunt.registerTask('ci', [

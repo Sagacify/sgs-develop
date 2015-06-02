@@ -2,7 +2,8 @@ var _ = require('underscore');
 	_.str = require('underscore.string');
 	_.mixin(_.str.exports());
 
-var async = require('async')
+var objectPath = require('object-path');
+var async = require('async');
 
 module.exports = function(mongoose){
 
@@ -101,7 +102,8 @@ module.exports = function(mongoose){
 						value = value.toString();
 					}
 
-					developedObject[path] = value;
+					objectPath.set(developedObject, path, value);
+
 					callback();
 				});
 			}, callback);

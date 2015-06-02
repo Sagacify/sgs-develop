@@ -12,12 +12,14 @@ EmbeddedTestSchema.methods.developSchema = function(options, callback){
 	var ds = {
 		light: {
 			paths: [
+				'_id',
 				'embeddedAttr'
 			]
 		},
 
 		detailed: {
 			paths: [
+				'_id',
 				'embeddedAttr',
 				'virtualAttr'
 			]
@@ -38,6 +40,9 @@ var TestSchema = new mongoose.Schema({
 	attr2: {
 		attr3: {
 			type: String
+		},
+		_id: {
+			type: 'ObjectId'
 		}
 	},
 	arrayAttr: [{
@@ -61,6 +66,7 @@ TestSchema.methods.developSchema = function(options, callback){
 			paths: [
 				'_id',
 				'attr1',
+				'attr2._id',
 				'attr2.attr3'
 			]
 		},
