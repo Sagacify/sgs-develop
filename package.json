@@ -1,7 +1,7 @@
 {
 	"name": "sgs-develop",
 	"private": true,
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Sagacify's develop module.",
 	"main": "src/index.js",
 	"scripts": {
