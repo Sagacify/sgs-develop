@@ -45,6 +45,9 @@ describe('Testing the mongoose develop module.', function () {
 					attr3: 'attr3',
 					_id: new (mongoose.Types.ObjectId)()
 				},
+				attr4: [
+					new (mongoose.Types.ObjectId)()
+				],
 				embeddedTests: [{
 					embeddedAttr: 'embeddedAttr'
 				}]
@@ -67,10 +70,11 @@ describe('Testing the mongoose develop module.', function () {
 	var assertTestLight = function(doc){
 		assert(!(doc instanceof mongoose.Document));
 		var keys = _(doc).keys();
-		assert.equal(keys.length, 3);
+		assert.equal(keys.length, 4);
 		assert(_(keys).contains('_id'));
 		assert(_(keys).contains('attr1'));
 		assert(_(keys).contains('attr2'));
+		assert(_(keys).contains('attr4'));
 		var nestkeys = _(doc.attr2).keys();
 		assert.equal(nestkeys.length, 2);
 		assert(_(nestkeys).contains('_id'));
@@ -80,10 +84,11 @@ describe('Testing the mongoose develop module.', function () {
 	var assertTestDetailed = function(doc){
 		assert(!(doc instanceof mongoose.Document));
 		var keys = _(doc).keys();
-		assert.equal(keys.length, 6);
+		assert.equal(keys.length, 7);
 		assert(_(keys).contains('_id'));
 		assert(_(keys).contains('attr1'));
 		assert(_(keys).contains('attr2'));
+		assert(_(keys).contains('attr4'));
 		var nestkeys = _(doc.attr2).keys();
 		assert.equal(nestkeys.length, 2);
 		assert(_(nestkeys).contains('_id'));
@@ -279,6 +284,32 @@ describe('Testing the mongoose develop module.', function () {
 				}
 
 				assert.strictEqual(typeof res.data.attr2._id, 'string');
+				done();
+			});
+		});
+	});
+
+	it('ObjectId is stringified in array of ObjectIds', function (done) {
+		mongoose.model('Test')
+		.findOne({}, function (e, test) {
+			var req = {
+				data: {
+					scope: 'light'
+				}
+			};
+			var res = {
+				data: test
+			};
+
+			develop({})(req, res, function (e) {
+				if (e) {
+					return done(e);
+				}
+
+				console.log(res.data.attr4[0]);
+				console.log(typeof res.data.attr4[0]);
+				console.log(Object.prototype.toString.call(res.data.attr4[0]));
+				assert.strictEqual(typeof res.data.attr4[0], 'string');
 				done();
 			});
 		});

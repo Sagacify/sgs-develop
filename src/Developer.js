@@ -12,7 +12,7 @@ var Developer = function (options) {
 _(Developer.prototype).extend({
 
 	develop: function (options) {
-		options = _.extend(options||{}, this.options);
+		options = _.defaults(options||{}, this.options);
 
 		var me = this;
 

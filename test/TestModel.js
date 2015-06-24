@@ -45,6 +45,9 @@ var TestSchema = new mongoose.Schema({
 			type: 'ObjectId'
 		}
 	},
+	attr4: [{
+		type: 'ObjectId'
+	}],
 	arrayAttr: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
@@ -67,7 +70,8 @@ TestSchema.methods.developSchema = function(options, callback){
 				'_id',
 				'attr1',
 				'attr2._id',
-				'attr2.attr3'
+				'attr2.attr3',
+				'attr4'
 			]
 		},
 
