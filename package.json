@@ -1,6 +1,5 @@
 {
 	"name": "sgs-develop",
-	"private": true,
 	"version": "1.0.1",
 	"description": "Sagacify's develop module.",
 	"main": "src/index.js",
@@ -36,7 +35,7 @@
 		"type": "git",
 		"url": "https://github.com/Sagacify/sgs-develop"
 	},
-	"author": "François Beuvens (https://github.com/fbeuvens)",
+	"author": "Sagacify",
 	"bugs": {
 		"url": "https://github.com/Sagacify/sgs-develop/issues"
 	},
